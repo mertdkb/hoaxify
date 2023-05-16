@@ -14,17 +14,21 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.isNotNull;
+
+import java.util.List;
 
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.internal.matchers.NotNull;
+import org.junit.runners.MethodSorters;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserControllerTest {
     
     private static final String API_1_0_USERS = "/api/v1.0/users";
@@ -59,6 +63,15 @@ public class UserControllerTest {
         User user = createValidUser();
         ResponseEntity<GenericResponse> response = testRestTemplate.postForEntity(API_1_0_USERS, user, GenericResponse.class);
         assertNotNull(response.getBody().getMessage());
+    }
+
+    @Test
+    public void postUser_whenUserIsValid_passwordIsHashedInDatabase(){
+        User user = createValidUser();
+        testRestTemplate.postForEntity(API_1_0_USERS, user, Object.class);
+        List<User> users = userRepository.findAll();
+        User userInDB = users.get(0);
+        assertNotEquals(userInDB.getPassword(), user.getPassword());
     }
 
     public User createValidUser() {
