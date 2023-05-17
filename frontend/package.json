@@ -5,6 +5,7 @@
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -35,9 +36,13 @@
     ]
   },
   "jest": {
-    "resetMocks": false
+    "resetMocks": false,
+    "moduleNameMapper": {
+      "axios": "axios/dist/node/axios.cjs"
+    }
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0"
-  }
+  },
+  "proxy": "http://localhost:8080"
 }
