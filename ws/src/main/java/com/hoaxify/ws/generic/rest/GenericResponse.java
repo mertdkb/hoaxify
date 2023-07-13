@@ -1,4 +1,4 @@
-package com.hoaxify.ws.genericResponse;
+package com.hoaxify.ws.generic.rest;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
